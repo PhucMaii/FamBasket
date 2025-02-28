@@ -8,6 +8,7 @@ import 'react-native-reanimated';
 import './global.css';
 
 import { Text, View } from 'react-native';
+import AuthProvider from '@/providers/AuthProvider';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -37,10 +38,14 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{headerShown: false}} />
+    <AuthProvider>
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{headerShown: false}} />
+        <Stack.Screen name="(auth)" options={{headerShown: false}} />
+        <Stack.Screen name="index" options={{headerShown: false}} />
 
-      <StatusBar backgroundColor="#161622" style="light" />
-    </Stack>
+        <StatusBar backgroundColor="#161622" style="light" />
+      </Stack>
+    </AuthProvider>
   );
 }

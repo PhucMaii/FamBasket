@@ -20,7 +20,7 @@ const CustomButton = ({
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.7}
-      className={`bg-secondary rounded-xl min-h-[62px] items-center justify-center ${containerStyles} ${
+      className={`rounded-xl min-h-[62px] items-center justify-center ${containerStyles} ${
         isLoading ? "opacity-50" : ""
       }`}
       disabled={isLoading}
