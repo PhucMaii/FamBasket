@@ -1,9 +1,10 @@
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import ProgressBar from "./ProgressBar";
 import { Swipeable } from "react-native-gesture-handler";
 import IconButton from "./IconButton";
 import { EditIcon, Trash2Icon } from "lucide-react-native";
+import { router } from "expo-router";
 
 const BasketActions = ({ height }: any) => {
   return (
@@ -23,6 +24,10 @@ const BasketActions = ({ height }: any) => {
 };
 
 const BasketCard = () => {
+  const directToBasket = () => {
+    router.replace("/basket-details/1");
+  };
+
   return (
     <Swipeable
       renderRightActions={() => <BasketActions />}
@@ -30,10 +35,14 @@ const BasketCard = () => {
         console.log("swiped");
       }}
     >
-      <View className="p-4 bg-primary-100 mt-4 rounded-xl border-2 border-gray">
-        <Text className="text-2xl font-psemibold text-primary">BasketCard</Text>
-        <ProgressBar value={50} label={"10 / 20"} />
-      </View>
+      <TouchableOpacity onPress={directToBasket}>
+        <View className="p-4 bg-primary-100 mt-4 rounded-xl border-2 border-gray">
+          <Text className="text-2xl font-psemibold text-primary">
+            BasketCard
+          </Text>
+          <ProgressBar value={50} label={"10 / 20"} />
+        </View>
+      </TouchableOpacity>
     </Swipeable>
   );
 };
