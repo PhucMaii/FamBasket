@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { EyeOff, Eye } from "lucide-react-native";
 
 type Props = {
-  title: string;
+  title?: string;
   value: string;
   placeholder: string;
   onChangeText: (text: string) => void;
@@ -25,7 +25,7 @@ const FormField = ({
 
   return (
     <View className={`space-y-2 ${otherStyles}`}>
-      <Text className="text-base text-gray-100 font-pmedium">{title}</Text>
+      {title && <Text className="text-base text-gray-100 font-pmedium">{title}</Text>}
 
       <View className="w-full h-16 px-4 bg-gray rounded-2xl border-2 border-gray focus:border-primary flex flex-row items-center">
         <TextInput
@@ -37,7 +37,7 @@ const FormField = ({
           {...props}
         />
 
-        {title === "Password" && (
+        {type === "Password" && (
           <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
             {showPassword ? (
               <Eye style={{ outlineColor: "#9BA1A6" }} />
