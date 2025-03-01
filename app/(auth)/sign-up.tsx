@@ -6,7 +6,7 @@ import FormField from "@/components/FormField";
 import CustomButton from "@/components/CustomButton";
 import Divider from "@/components/Divider";
 import { Link } from "expo-router";
-import { signUpWithEmail, supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase/config";
 import { logger } from "@/lib/logger";
 
 const SignUp = () => {

@@ -6,7 +6,7 @@ import CustomButton from "@/components/CustomButton";
 import { Redirect, router } from "expo-router";
 import images from "@/constants/images";
 import { useAuth } from "@/providers/AuthProvider";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase/config";
 
 const LandingScreen = () => {
   const { session, loading } = useAuth();

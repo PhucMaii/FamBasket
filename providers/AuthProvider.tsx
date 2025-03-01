@@ -1,5 +1,5 @@
-import { supabase } from "@/lib/supabase";
-import { Session } from "@supabase/supabase-js";
+import { supabase } from "@/lib/supabase/config";
+import { Session, User } from "@supabase/supabase-js";
 import React, {
   createContext,
   PropsWithChildren,
@@ -11,13 +11,15 @@ import { View, Text } from "react-native";
 
 type AuthData = {
   session: Session | null;
+  user: User | null;
   loading: boolean;
 };
 
-export const AuthContext = createContext<AuthData>({ session: null, loading: true });
+export const AuthContext = createContext<AuthData>({ session: null, user: null, loading: true });
 
 const AuthProvider = ({ children }: PropsWithChildren) => {
   const [session, setSession] = useState<Session | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -25,18 +27,20 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
       setLoading(true);
       const { data } = await supabase.auth.getSession();
       setSession(data.session);
+      setUser(data.session?.user || null);
       setLoading(false);
     };
 
+    
     fetchSession();
-
+    
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
   }, []);
-
+  
   return (
-    <AuthContext.Provider value={{ session, loading }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ session, user, loading }}>{children}</AuthContext.Provider>
   );
 };
 

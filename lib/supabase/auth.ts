@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createClient } from "@supabase/supabase-js";
-import { logger } from "./logger";
+import { logger } from "../logger";
 import { Alert } from "react-native";
 
 const supabaseUrl = "https://auhhmjgbkefnvmklydhm.supabase.co";
@@ -59,3 +59,14 @@ export const signInWithGoogle = async () => {
     logger("error", error.message);
   }
 };
+
+export const getUser = async () => {
+  try {
+    const { data, error } = await supabase.auth.getUser();
+    return { data, error };
+  } catch (error: any) {
+    logger("error", error.message);
+    return { data: null, error };
+
+  }
+}

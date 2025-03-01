@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity } from "react-native";
+import { ActivityIndicator, Text, TouchableOpacity } from "react-native";
 import React from "react";
 
 type Props = {
@@ -25,9 +25,13 @@ const CustomButton = ({
       }`}
       disabled={isLoading}
     >
-      <Text className={`text-primary font-psemibold ${textStyles}`}>
-        {title}
-      </Text>
+      {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+        <Text className={`text-primary font-psemibold ${textStyles}`}>
+          {title}
+        </Text>
+      )}
     </TouchableOpacity>
   );
 };

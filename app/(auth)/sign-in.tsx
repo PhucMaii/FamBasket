@@ -6,7 +6,7 @@ import FormField from "@/components/FormField";
 import CustomButton from "@/components/CustomButton";
 import Divider from "@/components/Divider";
 import { Link, router } from "expo-router";
-import { signInWithEmail, signInWithGoogle } from "@/lib/supabase";
+import { signInWithEmail, signInWithGoogle } from "@/lib/supabase/auth";
 
 const SignIn = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
