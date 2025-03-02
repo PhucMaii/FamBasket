@@ -8,40 +8,41 @@ import FormField from "@/components/FormField";
 import CustomButton from "@/components/CustomButton";
 import { updateBasket } from "@/lib/supabase/baskets";
 import { logger } from "@/lib/logger";
+import { showToast } from "@/lib/toast";
 
 type Props = {
   open: boolean;
   onClose: () => void;
   basket: Basket;
-  onUpdateBasketUI: (item: any) => void
+  onUpdateBasketUI: (item: any) => void;
 };
 
 const EditBasket = ({ open, onClose, basket, onUpdateBasketUI }: Props) => {
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [name, setName] = useState<string>(basket?.name || "");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [name, setName] = useState<string>(basket?.name || "");
 
-    useEffect(() => {
-        setName(basket?.name || "");
-    }, [basket]);
+  useEffect(() => {
+    setName(basket?.name || "");
+  }, [basket]);
 
-    const handleEditBasket = async () => {
-        setIsLoading(true);
-        try {
-            const { data, error }: any = await updateBasket(basket.id, name);
-            if (error) {
-                Alert.alert("Error", error.message);
-            }
+  const handleEditBasket = async () => {
+    setIsLoading(true);
+    try {
+      const { data, error }: any = await updateBasket(basket.id, name);
+      if (error) {
+        showToast("error", error.message);
+      }
 
-            onUpdateBasketUI(data);
-            setIsLoading(false);
-            console.log(data);
-        } catch (error: any) {
-            Alert.alert("Error", error.message);
-            logger("error", error.message);
-        } finally {
-            setIsLoading(false);
-        }
+      onUpdateBasketUI(data);
+      setIsLoading(false);
+      showToast("success", "Basket updated successfully");
+    } catch (error: any) {
+      showToast("error", error.message);
+      logger("error", error.message);
+    } finally {
+      setIsLoading(false);
     }
+  };
 
   return (
     <ModalWrapper open={open} onClose={onClose} position="end">

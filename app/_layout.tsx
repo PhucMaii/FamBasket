@@ -9,11 +9,11 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import AuthProvider from "@/providers/AuthProvider";
+import Toast from 'react-native-toast-message';
+
 import "react-native-reanimated";
 import "./global.css";
-
-import { Text, View } from "react-native";
-import AuthProvider from "@/providers/AuthProvider";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -44,14 +44,15 @@ export default function RootLayout() {
   return (
     <AuthProvider>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="basket-details" />
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="basket-details" />
 
-          <StatusBar backgroundColor="#161622" style="light" />
-        </Stack>
+            <StatusBar backgroundColor="#161622" style="light" />
+          </Stack>
+          <Toast />
       </GestureHandlerRootView>
     </AuthProvider>
   );

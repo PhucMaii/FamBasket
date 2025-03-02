@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createClient } from "@supabase/supabase-js";
 import { logger } from "../logger";
 import { Alert } from "react-native";
+import { showToast } from "../toast";
 
 const supabaseUrl = "https://auhhmjgbkefnvmklydhm.supabase.co";
 const supabaseAnonKey =
@@ -24,10 +25,14 @@ export const signInWithEmail = async (email: string, password: string) => {
     });
 
     if (error) {
-      Alert.alert("Error", error.message);
+      showToast("error", error.message);
+      return;
     }
+
+    showToast("success", "Signed in successfully");
   } catch (error: any) {
     logger("error", error.message);
+    showToast("error", error.message);
   }
 };
 
@@ -39,10 +44,14 @@ export const signUpWithEmail = async (email: string, password: string) => {
     });
 
     if (error) {
-      Alert.alert("Error", error.message);
+      showToast("error", error.message);
+      return;
     }
+
+    showToast("success", "Signed up successfully");
   } catch (error: any) {
     logger("error", error.message);
+    showToast("error", error.message);
   }
 };
 
@@ -51,12 +60,15 @@ export const signInWithGoogle = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
     });
-    console.log("signing in with google");
+
     if (error) {
-      Alert.alert("Error", error.message);
+      showToast("error", error.message);
     }
+
+    showToast("success", "Signed in successfully");
   } catch (error: any) {
     logger("error", error.message);
+    showToast("error", error.message);
   }
 };
 

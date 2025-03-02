@@ -7,6 +7,8 @@ import { CrossIcon, X } from "lucide-react-native";
 import { logger } from "@/lib/logger";
 import { createBasket } from "@/lib/supabase/baskets";
 import ModalWrapper from "../ModalWrapper";
+import Toast from "react-native-toast-message";
+import { showToast } from "@/lib/toast";
 
 type Props = {
   open: boolean;
@@ -30,6 +32,7 @@ const CreateBasket = ({ open, onClose, onAddBasketUI }: Props) => {
       setIsLoading(false);
 
       onAddBasketUI(newBasket);
+      showToast('success', 'New basket created successfully');
     } catch (error: any) {
       Alert.alert("Error", error.message);
       logger("error", error.message);

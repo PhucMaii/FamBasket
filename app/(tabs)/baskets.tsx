@@ -12,6 +12,8 @@ import { useAuth } from "@/providers/AuthProvider";
 import { RefreshControl } from "react-native";
 import EditBasket from "@/components/Modal/baskets/EditBasket";
 import ConfirmModal from "@/components/Modal/ConfirmModal";
+import Toast from "react-native-toast-message";
+import { showToast } from "@/lib/toast";
 
 const Baskets = () => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -48,6 +50,7 @@ const Baskets = () => {
       await deleteBasket(deleteBasketProps.basketId);
       onRemoveItemFromData(deleteBasketProps.basketId);
       setDeleteBasketProps({ open: false, basketId: null });
+      showToast('success', 'Basket deleted successfully');
     } catch (error) {
       console.log(error);
     }
