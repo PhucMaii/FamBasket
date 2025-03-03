@@ -30,7 +30,7 @@ const SignIn = () => {
             className="w-36 h-36"
           />
 
-          <Text className="text-3xl font-pbold text-primary mt-4">
+          <Text className="text-3xl font-pbold text-black mt-4">
             Login to FamBasket
           </Text>
 

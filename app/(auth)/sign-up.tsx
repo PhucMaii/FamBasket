@@ -8,6 +8,7 @@ import Divider from "@/components/Divider";
 import { Link } from "expo-router";
 import { supabase } from "@/lib/supabase/config";
 import { logger } from "@/lib/logger";
+import { signUpWithEmail } from "@/lib/supabase/auth";
 
 const SignUp = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -26,27 +27,16 @@ const SignUp = () => {
   //   }
   // };
 
-  const signUpWithEmail = async () => {
+  const handleSignup = async () => {
     setIsLoading(true);
     try {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password
-      });  
-  
-      if (error) {
-        Alert.alert('Error', error.message);
-        setIsLoading(false);
-        return;
-      }
-
+      await signUpWithEmail(email, password, username);
       setIsLoading(false);
     } catch (error: any) {
-      logger('error', error.message);
+      logger("error", error.message);
       setIsLoading(false);
     }
-  }
-  
+  };
 
   return (
     <SafeAreaView className="h-full">
@@ -91,7 +81,7 @@ const SignUp = () => {
 
           <CustomButton
             title="Sign up"
-            onPress={signUpWithEmail}
+            onPress={handleSignup}
             containerStyles="bg-secondary mt-8"
             textStyles="text-primary text-xl"
           />

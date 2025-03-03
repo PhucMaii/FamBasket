@@ -89,7 +89,7 @@ const Baskets = () => {
         )}
         ListHeaderComponent={() => (
           <View>
-            <Text className="text-2xl font-psemibold text-primary">
+            <Text className="text-2xl font-psemibold text-black">
               My Baskets
             </Text>
           </View>

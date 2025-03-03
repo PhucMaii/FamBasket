@@ -44,7 +44,7 @@ const CreateBasket = ({ open, onClose, onAddBasketUI }: Props) => {
   return (
     <ModalWrapper open={open} onClose={onClose} position="end">
       <View className="flex flex-row items-center justify-between">
-        <Text className="text-2xl font-psemibold text-primary">New Basket</Text>
+        <Text className="text-2xl font-psemibold text-black">New Basket</Text>
         <IconButton onPress={onClose} className="w-12 h-12 bg-transparent">
           <X />
         </IconButton>

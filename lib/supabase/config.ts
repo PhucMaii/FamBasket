@@ -18,4 +18,15 @@ export type Basket = {
   id: number;
   name: string;
   created_at: string;
+  basket_items: BasketItem[];
 };
+
+export type BasketItem = {
+  id: number;
+  basketId: number;
+  baseItemId: number;
+  price: number;
+  quantity: number;
+  name: string;
+  created_at: string;
+}

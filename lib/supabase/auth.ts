@@ -3,6 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import { logger } from "../logger";
 import { Alert } from "react-native";
 import { showToast } from "../toast";
+import { baseItems } from "@/constants/items";
 
 const supabaseUrl = "https://auhhmjgbkefnvmklydhm.supabase.co";
 const supabaseAnonKey =
@@ -19,7 +20,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 
 export const signInWithEmail = async (email: string, password: string) => {
   try {
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -27,6 +28,27 @@ export const signInWithEmail = async (email: string, password: string) => {
     if (error) {
       showToast("error", error.message);
       return;
+    }
+
+    // Check if user has base items yet
+    const { data: userItems } = await supabase.from("user_items").select("*").eq("userId", data.user?.id);
+    console.log({ userItems, userData: data.user });
+
+    // If user has no base items, create them
+    if (!userItems || userItems.length === 0) {
+      const userBaseItems = baseItems.map((item) => ({
+        userId: data.user?.id,
+        name: item,
+      }));
+
+      const { error: insertError } = await supabase
+        .from("user_items")
+        .insert(userBaseItems);
+
+      if (insertError) {
+        showToast("error", insertError.message);
+        return;
+      }
     }
 
     showToast("success", "Signed in successfully");
@@ -36,9 +58,13 @@ export const signInWithEmail = async (email: string, password: string) => {
   }
 };
 
-export const signUpWithEmail = async (email: string, password: string) => {
+export const signUpWithEmail = async (
+  email: string,
+  password: string,
+  username: string
+) => {
   try {
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
     });
@@ -47,6 +73,22 @@ export const signUpWithEmail = async (email: string, password: string) => {
       showToast("error", error.message);
       return;
     }
+
+    console.log({ data }, "SIGN UP");
+
+    // Update user metadata
+    await supabase
+      .from("profiles")
+      .update({ username })
+      .eq("id", data.user?.id);
+
+    // Create base items for new user
+    const userBaseItems = baseItems.map((item) => ({
+      userId: data.user?.id,
+      name: item,
+    }));
+
+    await supabase.from("user_items").insert(userBaseItems);
 
     showToast("success", "Signed up successfully");
   } catch (error: any) {
@@ -79,6 +121,5 @@ export const getUser = async () => {
   } catch (error: any) {
     logger("error", error.message);
     return { data: null, error };
-
   }
-}
+};

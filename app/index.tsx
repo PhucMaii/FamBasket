@@ -6,7 +6,6 @@ import CustomButton from "@/components/CustomButton";
 import { Redirect, router } from "expo-router";
 import images from "@/constants/images";
 import { useAuth } from "@/providers/AuthProvider";
-import { supabase } from "@/lib/supabase/config";
 
 const LandingScreen = () => {
   const { session, loading } = useAuth();
@@ -14,6 +13,8 @@ const LandingScreen = () => {
   if (loading) {
     return <ActivityIndicator />;
   }
+
+  console.log(session, "session in index");
 
   if (session) {
     return <Redirect href="/baskets" />;
@@ -48,13 +49,6 @@ const LandingScreen = () => {
         <CustomButton
           title="Let's get started"
           onPress={() => router.push("/sign-in")}
-          containerStyles="bg-secondary mb-4 px-4 py-2 min-w-[300px]"
-          textStyles="text-xl"
-        />
-
-        <CustomButton
-          title="Log out"
-          onPress={() => supabase.auth.signOut()}
           containerStyles="bg-secondary mb-4 px-4 py-2 min-w-[300px]"
           textStyles="text-xl"
         />
