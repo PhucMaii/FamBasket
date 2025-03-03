@@ -30,3 +30,10 @@ export type BasketItem = {
   name: string;
   created_at: string;
 }
+
+export type UserItem = {
+  id: number;
+  userId: number;
+  name: string;
+  created_at: string;
+}

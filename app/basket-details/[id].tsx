@@ -10,10 +10,16 @@ import { logger } from "@/lib/logger";
 import { showToast } from "@/lib/toast";
 import { getBasketById } from "@/lib/supabase/baskets";
 import images from "@/constants/images";
+import BasketActions from "@/components/Modal/baskets/BasketActions";
+import ItemsSelection from "@/components/Modal/ItemsSelection";
 
 const BasketDetails = () => {
   const { id } = useLocalSearchParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isOpenBasketActions, setIsOpenBasketActions] =
+    useState<boolean>(false);
+  const [isOpenBasketDetails, setIsOpenBasketDetails] =
+    useState<boolean>(false);
   const [basket, setBasket] = useState<Basket | null>(null);
 
   useEffect(() => {
@@ -63,7 +69,10 @@ const BasketDetails = () => {
             </IconButton>
           ),
           headerRight: () => (
-            <IconButton onPress={() => {}} className="bg-transparent">
+            <IconButton
+              onPress={() => setIsOpenBasketActions(true)}
+              className="bg-transparent"
+            >
               <MoreVertical size={24} color="gray" />
             </IconButton>
           ),
@@ -76,6 +85,14 @@ const BasketDetails = () => {
           },
           headerTintColor: "#fff",
         }}
+      />
+      <BasketActions
+        open={isOpenBasketActions}
+        onClose={() => setIsOpenBasketActions(false)}
+      />
+      <ItemsSelection
+        open={isOpenBasketDetails}
+        onClose={() => setIsOpenBasketDetails(false)}
       />
       <View className="h-full bg-white">
         <FlatList
@@ -98,7 +115,7 @@ const BasketDetails = () => {
 
         <View className="absolute bottom-20 right-4">
           <IconButton
-            onPress={() => {}}
+            onPress={() => setIsOpenBasketDetails(true)}
             className="bg-primary-100 w-20 h-20 shadow-lg"
           >
             <Plus color="#11441F" size={40} />

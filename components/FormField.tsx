@@ -9,6 +9,7 @@ type Props = {
   onChangeText: (text: string) => void;
   otherStyles?: string;
   type?: string;
+  startIcon?: any;
   [key: string]: any;
 };
 
@@ -19,6 +20,7 @@ const FormField = ({
   onChangeText,
   otherStyles,
   type,
+  startIcon,
   ...props
 }: Props) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -28,6 +30,7 @@ const FormField = ({
       {title && <Text className="text-base text-gray-100 font-pmedium">{title}</Text>}
 
       <View className="w-full h-16 px-4 bg-gray rounded-2xl border-2 border-gray focus:border-primary flex flex-row items-center">
+        {/* {startIcon} */}
         <TextInput
           className="flex-1 text-primary font-psemibold text-base"
           placeholder={placeholder}
