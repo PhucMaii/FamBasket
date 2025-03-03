@@ -35,5 +35,7 @@ export type UserItem = {
   id: number;
   userId: number;
   name: string;
+  quantity?: number;
+  price?: number;
   created_at: string;
 }

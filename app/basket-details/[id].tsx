@@ -1,11 +1,11 @@
 import { View, Text, FlatList, ActivityIndicator, Image } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import IconButton from "@/components/IconButton";
 import { Activity, ArrowLeft, MoreVertical, Plus } from "lucide-react-native";
 import BasketItemRow from "@/components/BasketItemRow";
 import Divider from "@/components/Divider";
-import { Basket } from "@/lib/supabase/config";
+import { Basket, UserItem } from "@/lib/supabase/config";
 import { logger } from "@/lib/logger";
 import { showToast } from "@/lib/toast";
 import { getBasketById } from "@/lib/supabase/baskets";
@@ -15,12 +15,14 @@ import ItemsSelection from "@/components/Modal/ItemsSelection";
 
 const BasketDetails = () => {
   const { id } = useLocalSearchParams();
+
+  const [addedItems, setAddedItems] = useState<UserItem[]>([]);
+  const [basket, setBasket] = useState<Basket | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isOpenBasketActions, setIsOpenBasketActions] =
     useState<boolean>(false);
   const [isOpenBasketDetails, setIsOpenBasketDetails] =
-    useState<boolean>(false);
-  const [basket, setBasket] = useState<Basket | null>(null);
+  useState<boolean>(false);
 
   useEffect(() => {
     handleFetchBasket();
@@ -38,6 +40,44 @@ const BasketDetails = () => {
       setIsLoading(false);
     }
   };
+
+  const onIncrementItem = (item: UserItem) => {
+    const isExist = addedItems.some((i) => i.name === item.name);
+    if (isExist) {
+      const newItems = addedItems.map((i) => {
+        if (i.name === item.name) {
+          return { ...i, quantity: (i?.quantity || 0) + 1 };
+        }
+        return i;
+      })
+
+      setAddedItems(newItems);
+    } else {
+      setAddedItems([...addedItems, { ...item, quantity: 1 }]);
+    }
+  }
+
+  const onDecrementItem = (item: UserItem) => {
+    const isExist = addedItems.some((i) => i.name === item.name);
+    if (isExist) {
+      if (item.quantity === 1) {
+        const newItems = addedItems.filter((i) => i.name !== item.name);
+        setAddedItems(newItems);
+        return;
+      }
+
+      const newItems = addedItems.map((i) => {
+        if (i.name === item.name) {
+          return { ...i, quantity: (i?.quantity || 0) - 1 };
+        }
+        return i;
+      })
+
+      setAddedItems(newItems);
+    } else {
+      showToast("error", "Item not found");
+    }
+  }
 
   if (isLoading) {
     return (
@@ -93,15 +133,16 @@ const BasketDetails = () => {
       <ItemsSelection
         open={isOpenBasketDetails}
         onClose={() => setIsOpenBasketDetails(false)}
+        basketId={Number(id)}
       />
       <View className="h-full bg-white">
         <FlatList
           data={basket?.basket_items || []}
           renderItem={({ item }) => (
-            <>
-              <BasketItemRow />
+            <Fragment key={item.id}>
+              <BasketItemRow item={item} />
               <Divider></Divider>
-            </>
+            </Fragment>
           )}
           ListEmptyComponent={() => (
             <View className="flex-1 mt-20 items-center justify-center">

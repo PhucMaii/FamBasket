@@ -32,13 +32,13 @@ export const signInWithEmail = async (email: string, password: string) => {
 
     // Check if user has base items yet
     const { data: userItems } = await supabase.from("user_items").select("*").eq("userId", data.user?.id);
-    console.log({ userItems, userData: data.user });
 
     // If user has no base items, create them
     if (!userItems || userItems.length === 0) {
       const userBaseItems = baseItems.map((item) => ({
         userId: data.user?.id,
         name: item,
+        price: 0,
       }));
 
       const { error: insertError } = await supabase
